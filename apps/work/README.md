@@ -1,21 +1,5 @@
-# Work
+# RabbitMQ [Work Queue](https://www.rabbitmq.com/tutorials/tutorial-two-elixir.html) example
 
-**TODO: Add description**
-
-## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `work` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:work, "~> 0.1.0"}
-  ]
-end
-```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/work](https://hexdocs.pm/work).
-
+* mix run lib/send.exs work roland 100 1000
+* mix run lib/receive.exs 500 5000
+* mix run lib/receive.exs 2000 5000

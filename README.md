@@ -1,4 +1,4 @@
-# RabbitMQ [Examples]()
+# RabbitMQ [Examples](https://www.rabbitmq.com/getstarted.html)
 
 In general ...
 
@@ -8,4 +8,9 @@ In general ...
 ## Hello World
 
 * cd apps/hello
+* follow the README
+
+## Work Queue
+
+* cd apps/work
 * follow the README
