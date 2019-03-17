@@ -1,16 +1,16 @@
-defmodule Work.Send do
+defmodule PubSub.Send do
   @moduledoc """
-  Implementing the `Work Queue` RabbitMQ example.
+  Implementing the `Publish/Subscribe` RabbitMQ example.
   """
 
-  @queue "work"
+  @exchange "gossip"
 
   @doc """
-  Send message to a queue (n times, with a/the given delay).
+  Send message (n times, with a/the given delay).
   """
   def send(_, _, 0, _), do: :ok
   def send(channel, message, iterations, delay) do
-    AMQP.Basic.publish(channel, "", @queue, ~s(#{message}-#{iterations}))
+    AMQP.Basic.publish(channel, @exchange, "", ~s(#{message}-#{iterations}))
     Process.sleep(delay)
     send(channel, message, iterations - 1, delay)
   end
@@ -26,7 +26,7 @@ defmodule Work.Send do
     {:ok, connection} = AMQP.Connection.open()
     {:ok, channel} = AMQP.Channel.open(connection)
 
-    AMQP.Queue.declare(channel, @queue)
+    AMQP.Exchange.declare(channel, @exchange, :fanout)
 
     send(channel, message, iterations, delay)
 
@@ -35,4 +35,4 @@ defmodule Work.Send do
   end
 end
 
-System.argv() |> Work.Send.start()
+System.argv() |> PubSub.Send.start()
