@@ -9,17 +9,17 @@ defmodule Topic.Send do
   Send message (n times, with a/the given delay).
   """
   def send(_, _, _, 0, _), do: :ok
-  def send(channel, celebrity, message, iterations, delay) do
-    AMQP.Basic.publish(channel, @exchange, celebrity, ~s(#{message}-#{iterations}))
+  def send(channel, topic, message, iterations, delay) do
+    AMQP.Basic.publish(channel, @exchange, topic, ~s(#{message}-#{iterations}))
     Process.sleep(delay)
-    send(channel, celebrity, message, iterations - 1, delay)
+    send(channel, topic, message, iterations - 1, delay)
   end
 
   @doc """
   Parse the args, connect to RabbitMQ and start to send the messages.
   """
   def start(args) do
-    celebrity = args |> Enum.at(0)
+    topic = args |> Enum.at(0)
     message = args |> Enum.at(0)
     {iterations, _} = args |> Enum.at(1) |> Integer.parse()
     {delay, _} = args |> Enum.at(2) |> Integer.parse()
@@ -29,7 +29,7 @@ defmodule Topic.Send do
 
     AMQP.Exchange.declare(channel, @exchange, :topic)
 
-    send(channel, celebrity, message, iterations, delay)
+    send(channel, topic, message, iterations, delay)
 
     AMQP.Channel.close(channel)
     AMQP.Connection.close(connection)

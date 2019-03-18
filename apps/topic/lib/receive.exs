@@ -23,7 +23,7 @@ defmodule Topic.Receive do
   Parse the args, connect to RabbitMQ and start to process messages.
   """
   def start(args) do
-    celebrity = args |> Enum.at(0)
+    key = args |> Enum.at(0)
     {delay, _} = args |> Enum.at(1) |> Integer.parse()
     {timeout, _} = args |> Enum.at(2) |> Integer.parse()
 
@@ -33,7 +33,7 @@ defmodule Topic.Receive do
     {:ok, %{queue: qname}} = AMQP.Queue.declare(channel, "", exclusive: true)
     # {:ok, %{queue: qname}} = AMQP.Queue.declare(channel, celebrity)
     AMQP.Exchange.declare(channel, @exchange, :topic)
-    AMQP.Queue.bind(channel, qname, @exchange, routing_key: celebrity)
+    AMQP.Queue.bind(channel, qname, @exchange, routing_key: key)
     AMQP.Basic.consume(channel, qname, nil, no_ack: true)
 
     wait_for_messages(delay, timeout)
