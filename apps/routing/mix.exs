@@ -1,9 +1,9 @@
-defmodule Work.MixProject do
+defmodule Routing.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :work,
+      app: :routing,
       version: "0.1.0",
       build_path: "../../_build",
       config_path: "../../config/config.exs",
